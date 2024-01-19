@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+/src/lib/**/*.js
+/src/lib/**/*.js.map
+
 .DS_Store
 ec2-user-key-pair.pem
 /tmp

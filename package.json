@@ -4,9 +4,9 @@
 	"description": "A powerful web component router",
 	"license": "MIT",
 	"author": "Andreas Mehlsen",
-	"types": "index.d.ts",
-	"module": "index.js",
-	"main": "index.js",
+	"type": "module",
+	"types": "src/lib/index.ts",
+	"main": "src/lib/index.js",
 	"bugs": {
 		"url": "https://github.com/andreasbm/router-slot/issues"
 	},
@@ -50,11 +50,9 @@
 		"custom-elements-json": "npx wca analyze src/lib --format json --outFile dist/custom-elements.json"
 	},
 	"devDependencies": {
-		"@appnest/readme": "^1.2.7",
-		"@appnest/web-config": "^0.5.4",
+		"chai": "^5.0.0",
 		"lit": "^2.2.3",
-		"node-typescript-compiler": "^2.4.0",
-		"weightless": "0.0.37"
+		"node-typescript-compiler": "^2.4.0"
 	},
 	"contributors": [
 		{
@@ -67,5 +65,9 @@
 			"img": "https://joeschmoe.io/api/v1/random",
 			"url": "https://github.com/andreasbm/router-slot/blob/master/CONTRIBUTING.md"
 		}
-	]
+	],
+	"dependencies": {
+		"@appnest/readme": "link:../readme",
+		"@appnest/web-config": "link:../web-config"
+	}
 }

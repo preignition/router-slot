@@ -1,3 +1,41 @@
 {
-	"extends": "./node_modules/@appnest/web-config/tsconfig.json"
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": false,
+		"newLine": "LF",
+		"sourceMap": true,
+		"allowSyntheticDefaultImports": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"allowJs": false,
+		"alwaysStrict": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noEmitOnError": true,
+		"strictNullChecks": true,
+		"experimentalDecorators": true,
+		"strict": true,
+		"lib": [
+			"es2015.promise",
+			"dom",
+			"scripthost",
+			"es7",
+			"es6",
+			"es2017",
+			"es2017.object",
+			"es2015.proxy",
+			"esnext"
+		],
+		"plugins": [
+			{
+				"name": "ts-lit-plugin"
+			}
+		]
+	},
+	"exclude": [
+		"dist", "src/test", "src/demo", "rollup.config.ts", "node_modules"
+	]
 }
