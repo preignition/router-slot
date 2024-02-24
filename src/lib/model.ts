@@ -1,3 +1,4 @@
+import type {TemplateResult} from 'lit'
 export interface IRouterSlot<D = any, P = any> extends HTMLElement {
 	readonly route: IRoute<D> | null;
 	readonly isRoot: boolean;
@@ -71,7 +72,7 @@ export interface IRedirectRoute<D = any> extends IRouteBase<D> {
 export interface IComponentRoute<D = any> extends IRouteBase<D> {
 
 	// The component loader (should return a module with a default export)
-	component: Class | ModuleResolver | PageComponent | (() => Class) | (() => PageComponent) | (() => ModuleResolver);
+	component: TemplateResult | Class | ModuleResolver | PageComponent | (() => TemplateResult) | (() => Class) | (() => PageComponent) | (() => ModuleResolver);
 
 	// A custom setup function for the instance of the component.
 	setup?: Setup;

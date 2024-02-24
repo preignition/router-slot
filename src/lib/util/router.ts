@@ -45,7 +45,7 @@ export function matchRoute<D = any> (route: IRoute<D>, path: string | PathFragme
 	// - We start the match with .*? to allow anything to be in front of what we are trying to match.
 	// - We end the match with .*? to allow anything to be after what we are trying to match.
 	// All matches starts with ^ to make sure the match is done from the beginning of the path.
-	const regex = route.path === CATCH_ALL_WILDCARD || (route.path.length === 0 && route.pathMatch != "full" ) ? /^/ : (() => {
+	const regex = route.path === CATCH_ALL_WILDCARD || (route.path.length === 0 && route.pathMatch != "full") ? /^/ : (() => {
 		switch (route.pathMatch || DEFAULT_PATH_MATCH) {
 			case "full": return new RegExp(`^${routePath}\/?$`);
 			case "suffix": return new RegExp(`^.*?${routePath}\/?$`);
@@ -89,7 +89,7 @@ export function matchRoute<D = any> (route: IRoute<D>, path: string | PathFragme
  * @param routes
  * @param path
  */
-export function matchRoutes<D = any> (routes: IRoute<D>[], path: string | PathFragment): IRouteMatch<D> | null {
+export function matchRoutes<D = any>(routes: IRoute<D>[], path: string | PathFragment): IRouteMatch<D> | null {
 	for (const route of routes) {
 		const match = matchRoute(route, path);
 		if (match != null) {
@@ -147,7 +147,7 @@ export async function resolvePageComponent (route: IComponentRoute, info: IRouti
  * Determines if a route is a redirect route.
  * @param route
  */
-export function isRedirectRoute (route: IRoute): route is IRedirectRoute {
+export function isRedirectRoute(route: IRoute): route is IRedirectRoute {
 	return "redirectTo" in route;
 }
 
@@ -155,7 +155,7 @@ export function isRedirectRoute (route: IRoute): route is IRedirectRoute {
  * Determines if a route is a resolver route.
  * @param route
  */
-export function isResolverRoute (route: IRoute): route is IResolverRoute {
+export function isResolverRoute(route: IRoute): route is IResolverRoute {
 	return "resolve" in route;
 }
 
@@ -163,7 +163,7 @@ export function isResolverRoute (route: IRoute): route is IResolverRoute {
  * Traverses the router tree up to the root route.
  * @param slot
  */
-export function traverseRouterTree (slot: IRouterSlot): {tree: RouterTree, depth: number} {
+export function traverseRouterTree(slot: IRouterSlot): { tree: RouterTree, depth: number } {
 
 	// Find the nodes from the route up to the root route
 	let routes: IRouterSlot[] = [slot];
@@ -174,12 +174,12 @@ export function traverseRouterTree (slot: IRouterSlot): {tree: RouterTree, depth
 
 	// Create the tree
 	const tree: RouterTree = routes.reduce((acc: RouterTree, slot: IRouterSlot) => {
-		return {slot, child: acc};
+		return { slot, child: acc };
 	}, undefined);
 
 	const depth = routes.length;
 
-	return {tree, depth};
+	return { tree, depth };
 }
 
 /**
@@ -187,7 +187,7 @@ export function traverseRouterTree (slot: IRouterSlot): {tree: RouterTree, depth
  * @param tree
  * @param depth
  */
-export function getFragments (tree: RouterTree, depth: number): PathFragment[] {
+export function getFragments(tree: RouterTree, depth: number): PathFragment[] {
 	let child = tree;
 	const fragments: PathFragment[] = [];
 
@@ -209,11 +209,11 @@ export function getFragments (tree: RouterTree, depth: number): PathFragment[] {
  * @param slot
  * @param path
  */
-export function constructAbsolutePath<D = any, P = any> (slot: IRouterSlot<D, P>,
-                                                         path: string | PathFragment = ""): string {
+export function constructAbsolutePath<D = any, P = any>(slot: IRouterSlot<D, P>,
+	path: string | PathFragment = ""): string {
 
 	// Grab the router tree
-	const {tree, depth} = traverseRouterTree(slot);
+	const { tree, depth } = traverseRouterTree(slot);
 
 	// If the path starts with "/" we treat it as an absolute path
 	// and therefore don't continue because it is already absolute.
@@ -248,7 +248,7 @@ export function constructAbsolutePath<D = any, P = any> (slot: IRouterSlot<D, P>
 	}
 
 	// Add the base path in front of the path. If the path is already absolute, the path wont get the base path added.
-	return constructPathWithBasePath(path, {end: false});
+	return constructPathWithBasePath(path, { end: false });
 }
 
 /**
@@ -256,7 +256,7 @@ export function constructAbsolutePath<D = any, P = any> (slot: IRouterSlot<D, P>
  * @param slot
  * @param route
  */
-export function handleRedirect (slot: IRouterSlot, route: IRedirectRoute) {
+export function handleRedirect(slot: IRouterSlot, route: IRedirectRoute) {
 	history.replaceState(history.state, "", `${constructAbsolutePath(slot, route.redirectTo)}${route.preserveQuery ? queryString() : ""}`);
 }
 
@@ -265,7 +265,7 @@ export function handleRedirect (slot: IRouterSlot, route: IRedirectRoute) {
  * @param currentMatch
  * @param newMatch
  */
-export function shouldNavigate<D> (currentMatch: IRouteMatch<D> | null, newMatch: IRouteMatch<D>) {
+export function shouldNavigate<D>(currentMatch: IRouteMatch<D> | null, newMatch: IRouteMatch<D>) {
 
 	// If the current match is not defined we should always route.
 	if (currentMatch == null) {
@@ -273,8 +273,8 @@ export function shouldNavigate<D> (currentMatch: IRouteMatch<D> | null, newMatch
 	}
 
 	// Extract information about the matches
-	const {route: currentRoute, fragments: currentFragments} = currentMatch;
-	const {route: newRoute, fragments: newFragments} = newMatch;
+	const { route: currentRoute, fragments: currentFragments } = currentMatch;
+	const { route: newRoute, fragments: newFragments } = newMatch;
 
 	const isSameRoute = currentRoute == newRoute;
 	const isSameFragments = currentFragments.consumed == newFragments.consumed;

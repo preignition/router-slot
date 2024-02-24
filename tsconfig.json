@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "esnext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"emitDecoratorMetadata": false,
 		"newLine": "LF",
 		"sourceMap": true,
@@ -29,6 +29,7 @@
 			"es2015.proxy",
 			"esnext"
 		],
+		"types": ["vite/client", "mocha"],
 		"plugins": [
 			{
 				"name": "ts-lit-plugin"

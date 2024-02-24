@@ -1,18 +1,17 @@
+import { beforeEach, describe, it, afterAll, beforeAll } from 'vitest'
 import { GLOBAL_ROUTER_EVENTS_TARGET } from "../lib/config";
 import { ensureHistoryEvents, historyPatches } from "../lib/util/history";
 import { clearHistory } from "./test-helpers";
 
 describe("history", () => {
-	before(() => {
+	beforeAll(() => {
 		ensureHistoryEvents();
 	});
-	beforeEach(() => {
-	});
-	after(() => {
+	afterAll(() => {
 		clearHistory();
 	});
 
-	it("[ensureHistoryEvents] should patch history object", (done) => {
+	it("[ensureHistoryEvents] should patch history object", () => new Promise<void>(done => {
 		const expectedEventCount = historyPatches.reduce((acc, patch) => acc + patch[1].length, 0);
 		let eventCount = 0;
 
@@ -29,7 +28,7 @@ describe("history", () => {
 				GLOBAL_ROUTER_EVENTS_TARGET.addEventListener(event, () => {
 					eventCount += 1;
 					testExpectedEventCount();
-				}, {once: true});
+				}, { once: true });
 			}
 		}
 
@@ -37,5 +36,5 @@ describe("history", () => {
 		for (const [name] of historyPatches) {
 			(<any>history)[name](...["", "", ""]);
 		}
-	});
+	}));
 });

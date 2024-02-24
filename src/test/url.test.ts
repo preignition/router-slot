@@ -1,17 +1,17 @@
+import { beforeEach, describe, it, beforeAll, afterAll, expect } from 'vitest'
 import { basePath, path, query, toQuery, toQueryString } from "../lib/util/url";
 import { addBaseTag, clearHistory } from "./test-helpers";
 
 describe("url", () => {
-	const {expect} = chai;
 	let $base: HTMLBaseElement;
 
-	before(() => {
+	beforeAll(() => {
 		$base = addBaseTag();
 	});
 	beforeEach(async () => {
 		$base.href = `/`;
 	});
-	after(() => {
+	afterAll(() => {
 		clearHistory();
 	});
 
