@@ -1,6 +1,14 @@
+import type { TemplateResult } from 'lit';
 import { CATCH_ALL_WILDCARD, DEFAULT_PATH_MATCH, PARAM_IDENTIFIER, TRAVERSE_FLAG } from "../config";
-import { IComponentRoute, IRedirectRoute, IResolverRoute, IRoute, IRouteMatch, IRouterSlot, ModuleResolver, PageComponent, Params, PathFragment, RouterTree, IRoutingInfo } from "../model";
+import { IComponentRoute, IRedirectRoute, IResolverRoute, IRoute, IRouteMatch, IRouterSlot, IRoutingInfo, ModuleResolver, PageComponent, Params, PathFragment, RouterTree } from "../model";
 import { constructPathWithBasePath, path as getPath, queryString, stripSlash } from "./url";
+
+/**
+ * determines whether a el is a Lit TemplateResult
+ */
+export function isTemplateResult(el: any): el is TemplateResult {
+	return el.strings !== undefined && el.values !== undefined;
+}
 
 /**
  * Determines whether the path is active.
@@ -8,7 +16,7 @@ import { constructPathWithBasePath, path as getPath, queryString, stripSlash } f
  * @param path
  * @param fullPath
  */
-export function isPathActive (path: string | PathFragment, fullPath: string = getPath()): boolean {
+export function isPathActive(path: string | PathFragment, fullPath: string = getPath()): boolean {
 	return new RegExp(`^${stripSlash(path)}(\/|$)`, "gm").test(stripSlash(fullPath));
 }
 
@@ -17,7 +25,7 @@ export function isPathActive (path: string | PathFragment, fullPath: string = ge
  * @param route
  * @param path
  */
-export function matchRoute<D = any> (route: IRoute<D>, path: string | PathFragment): IRouteMatch<D> | null {
+export function matchRoute<D = any>(route: IRoute<D>, path: string | PathFragment): IRouteMatch<D> | null {
 
 	// We start by preparing the route path by replacing the param names with a regex that matches everything
 	// until either the end of the path or the next "/". While replacing the param placeholders we make sure
@@ -106,13 +114,13 @@ export function matchRoutes<D = any>(routes: IRoute<D>[], path: string | PathFra
  * @param route
  * @param info
  */
-export async function resolvePageComponent (route: IComponentRoute, info: IRoutingInfo): Promise<PageComponent> {
+export async function resolvePageComponent(route: IComponentRoute, info: IRoutingInfo, rootNode: HTMLElement): Promise<PageComponent> {
 
 	// Figure out if the component were given as an import or class.
 	let cmp = route.component;
 	if (cmp instanceof Function) {
 		try {
-			cmp = (cmp as Function)();
+			cmp = (cmp as Function).call(rootNode, info);
 		} catch (err) {
 
 			// The invocation most likely failed because the function is a class.
@@ -125,11 +133,14 @@ export async function resolvePageComponent (route: IComponentRoute, info: IRouti
 	}
 
 	// Load the module or component.
-	const moduleClassOrPage = await Promise.resolve(<ModuleResolver>cmp);
+	const moduleClassOrPage = await Promise.resolve(<ModuleResolver | TemplateResult>cmp);
 
 	// Instantiate the component
 	let component!: PageComponent;
-	if (!(moduleClassOrPage instanceof HTMLElement)) {
+	if (isTemplateResult(moduleClassOrPage)) {
+		component = moduleClassOrPage;
+	}
+	else if (!(moduleClassOrPage instanceof HTMLElement)) {
 		component = new (moduleClassOrPage.default ? moduleClassOrPage.default : moduleClassOrPage)() as PageComponent;
 	} else {
 		component = cmp as PageComponent;

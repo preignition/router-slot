@@ -1,9 +1,11 @@
+import { render } from 'lit';
 import { GLOBAL_ROUTER_EVENTS_TARGET, ROUTER_SLOT_TAG_NAME } from "./config";
 import { Cancel, EventListenerSubscription, GlobalRouterEvent, IPathFragments, IRoute, IRouteMatch, IRouterSlot, IRoutingInfo, Params, PathFragment, RouterSlotEvent } from "./model";
-import { addListener, constructAbsolutePath, dispatchGlobalRouterEvent, dispatchRouteChangeEvent, ensureAnchorHistory, ensureHistoryEvents, handleRedirect, isRedirectRoute, isResolverRoute, matchRoutes, pathWithoutBasePath, queryParentRouterSlot, removeListeners, resolvePageComponent, shouldNavigate } from "./util";
+import { addListener, constructAbsolutePath, dispatchGlobalRouterEvent, dispatchRouteChangeEvent, ensureAnchorHistory, ensureHistoryEvents, handleRedirect, isRedirectRoute, isResolverRoute, isTemplateResult, matchRoutes, pathWithoutBasePath, queryParentRouterSlot, removeListeners, resolvePageComponent, shouldNavigate } from "./util";
 
 const template = document.createElement("template");
 template.innerHTML = `<slot></slot>`;
+
 
 // Patches the history object and ensures the correct events.
 ensureHistoryEvents();
@@ -18,6 +20,7 @@ ensureAnchorHistory();
  */
 export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouterSlot<D, P> {
 
+	div = document.createElement('div');
 	/**
 	 * Listeners on the router.
 	 */
@@ -286,22 +289,35 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
 
 				// If the component provided is a function (and not a class) call the function to get the promise.
 				else {
-					const page = await resolvePageComponent(route, info);
+					const page = await resolvePageComponent(route, info, (this.getRootNode() as ShadowRoot).host as HTMLElement);
 
 					// Cancel the navigation if another navigation event was sent while this one was loading
 					if (navigationInvalidated) {
 						return cancel();
 					}
 
+					
 					// Remove the old page by clearing the slot
 					this.clearChildren();
 
 					// Store the new route match before we append the new page to the DOM.
 					// We do this to ensure that we can find the match in the connectedCallback of the page.
 					this._routeMatch = match;
+					
+					if(isTemplateResult(page)) {
+						// render the template 
+						// we render in an external div first, otherwise lit complain about template part 
+						// being manipulated outside lit.
+						render(page, this.div);
 
-					// Append the new page
-					this.appendChild(page);
+						Array.from(this.div.childNodes)
+							.filter(node => node.nodeType !== Node.COMMENT_NODE)
+							.forEach(node => this.appendChild(node));
+
+					} else {	
+						// Append the new page
+						this.appendChild(page);
+					}
 				}
 
 				// Remember to cleanup after the navigation

@@ -1,4 +1,4 @@
-import type {TemplateResult} from 'lit'
+import type {LitElement, TemplateResult} from 'lit'
 export interface IRouterSlot<D = any, P = any> extends HTMLElement {
 	readonly route: IRoute<D> | null;
 	readonly isRoot: boolean;
@@ -23,7 +23,7 @@ export type CustomResolver<D = any, P = any> = ((info: IRoutingInfo<D>) => boole
 export type Guard<D = any, P = any> = ((info: IRoutingInfo<D, P>) => boolean | Promise<boolean>);
 export type Cancel = (() => boolean);
 
-export type PageComponent = HTMLElement;
+export type PageComponent = HTMLElement | TemplateResult;
 export type ModuleResolver = Promise<{default: any; /*PageComponent*/}>;
 export type Class<T extends PageComponent = PageComponent> = {new (...args: any[]): T;};
 export type Setup<D = any> = ((component: PageComponent, info: IRoutingInfo<D>) => void);
@@ -72,7 +72,7 @@ export interface IRedirectRoute<D = any> extends IRouteBase<D> {
 export interface IComponentRoute<D = any> extends IRouteBase<D> {
 
 	// The component loader (should return a module with a default export)
-	component: TemplateResult | Class | ModuleResolver | PageComponent | (() => TemplateResult) | (() => Class) | (() => PageComponent) | (() => ModuleResolver);
+	component: TemplateResult | Class | ModuleResolver | PageComponent | ((this: LitElement, info?: IRoutingInfo<D>) => TemplateResult) | (() => Class) | (() => PageComponent) | (() => ModuleResolver);
 
 	// A custom setup function for the instance of the component.
 	setup?: Setup;

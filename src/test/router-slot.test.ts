@@ -78,6 +78,10 @@ const mainRoutes: IRoute[] = [
         component: PageTwo
     },
     {
+        path: "lit/:id",
+        component: (info) => html`<span>${info?.match.params.id}</span>`  
+    },
+    {
         path: "**",
         redirectTo: "one"
     }
@@ -169,10 +173,28 @@ describe("router-slot", () => {
             history.pushState(null, "", `two/${param}`);
 
             waitForNavigation(() => {
+                // console.info('path', path(), $root.$slot.params);
                 expect(path()).to.equal(`/two/${param}/leaf-two/`);
                 expect(JSON.stringify($root.$slot.params)).to.equal(JSON.stringify({ id: param }));
                 done();
             });
         });
+        
+    }));
+    
+    it("should render lit template", () => new Promise<void>(async (done) => {
+        const { $root } = await setupTest();
+        waitForNavigation(() => {
+            const param = "1234";
+            history.pushState(null, "", `lit/${param}`);
+
+            waitForNavigation(() => {
+                console.info('path', path(), $root.$slot);
+                expect(path()).to.equal(`/lit/${param}/`);
+                expect($root.$slot.innerHTML).to.contain(param);
+                done();
+            });
+        });
+        
     }));
 });
