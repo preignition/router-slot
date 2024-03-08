@@ -9,7 +9,7 @@ ec2-user-key-pair.pem
 env.json
 
 # compiled output
-/dist
+# /dist
 
 # dependencies
 /node_modules

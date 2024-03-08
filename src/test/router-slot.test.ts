@@ -79,7 +79,7 @@ const mainRoutes: IRoute[] = [
     },
     {
         path: "lit/:id",
-        component: (info) => html`<span>${info?.match.params.id}</span>`  
+        component: (info) => html`<span>${info?.match.params.id}</span>`
     },
     {
         path: "**",
@@ -179,9 +179,9 @@ describe("router-slot", () => {
                 done();
             });
         });
-        
+
     }));
-    
+
     it("should render lit template", () => new Promise<void>(async (done) => {
         const { $root } = await setupTest();
         waitForNavigation(() => {
@@ -194,6 +194,6 @@ describe("router-slot", () => {
                 done();
             });
         });
-        
+
     }));
 });
