@@ -79,7 +79,7 @@ const mainRoutes: IRoute[] = [
     },
     {
         path: "lit/:id",
-        component: (info) => html`<span>${info?.match.params.id}</span>`  
+        component: (info) => html`<span>${info?.match.params.id}</span>`
     },
     {
         path: "**",
@@ -173,15 +173,15 @@ describe("router-slot", () => {
             history.pushState(null, "", `two/${param}`);
 
             waitForNavigation(() => {
-                // console.info('path', path(), $root.$slot.params);
+                console.info('path', path(), $root.$slot.params);
                 expect(path()).to.equal(`/two/${param}/leaf-two/`);
                 expect(JSON.stringify($root.$slot.params)).to.equal(JSON.stringify({ id: param }));
                 done();
             });
         });
-        
+
     }));
-    
+
     it("should render lit template", () => new Promise<void>(async (done) => {
         const { $root } = await setupTest();
         waitForNavigation(() => {
@@ -189,12 +189,11 @@ describe("router-slot", () => {
             history.pushState(null, "", `lit/${param}`);
 
             waitForNavigation(() => {
-                console.info('path', path(), $root.$slot);
                 expect(path()).to.equal(`/lit/${param}/`);
                 expect($root.$slot.innerHTML).to.contain(param);
                 done();
             });
         });
-        
+
     }));
 });
