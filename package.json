@@ -77,7 +77,6 @@
 		}
 	],
 	"dependencies": {
-		"@appnest/readme": "link:../readme",
-		"@typescript-eslint/eslint-plugin": "^7.1.1"
+		"@typescript-eslint/eslint-plugin": "^8"
 	}
 }
