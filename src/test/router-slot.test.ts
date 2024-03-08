@@ -189,7 +189,6 @@ describe("router-slot", () => {
             history.pushState(null, "", `lit/${param}`);
 
             waitForNavigation(() => {
-                console.info('path', path(), $root.$slot);
                 expect(path()).to.equal(`/lit/${param}/`);
                 expect($root.$slot.innerHTML).to.contain(param);
                 done();

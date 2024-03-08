@@ -5,6 +5,8 @@
 		"moduleResolution": "bundler",
 		"emitDecoratorMetadata": false,
 		"newLine": "LF",
+		"outDir": "./dist",
+    "rootDir": "./src/lib",
 		"sourceMap": true,
 		"allowSyntheticDefaultImports": true,
 		"noUnusedLocals": false,
@@ -37,6 +39,6 @@
 		]
 	},
 	"exclude": [
-		"dist", "src/test", "src/demo", "rollup.config.ts", "node_modules"
+		"dist", "src/test", "src/demo", "rollup.config.ts", "node_modules", "vite.config.ts"
 	]
 }
