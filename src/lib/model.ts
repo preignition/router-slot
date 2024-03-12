@@ -1,4 +1,4 @@
-import type {LitElement, TemplateResult} from 'lit'
+import type { LitElement, TemplateResult } from 'lit'
 export interface IRouterSlot<D = any, P = any> extends HTMLElement {
 	readonly route: IRoute<D> | null;
 	readonly isRoot: boolean;
@@ -24,11 +24,11 @@ export type Guard<D = any, P = any> = ((info: IRoutingInfo<D, P>) => boolean | P
 export type Cancel = (() => boolean);
 
 export type PageComponent = HTMLElement | TemplateResult;
-export type ModuleResolver = Promise<{default: any; /*PageComponent*/}>;
-export type Class<T extends PageComponent = PageComponent> = {new (...args: any[]): T;};
+export type ModuleResolver = Promise<{ default: any; /*PageComponent*/ }>;
+export type Class<T extends PageComponent = PageComponent> = { new(...args: any[]): T; };
 export type Setup<D = any> = ((component: PageComponent, info: IRoutingInfo<D>) => void);
 
-export type RouterTree<D = any, P = any> = {slot: IRouterSlot<D, P>} & {child?: RouterTree} | null | undefined;
+export type RouterTree<D = any, P = any> = { slot: IRouterSlot<D, P> } & { child?: RouterTree } | null | undefined;
 export type PathMatch = "prefix" | "suffix" | "full" | "fuzzy";
 
 /**
@@ -72,7 +72,15 @@ export interface IRedirectRoute<D = any> extends IRouteBase<D> {
 export interface IComponentRoute<D = any> extends IRouteBase<D> {
 
 	// The component loader (should return a module with a default export)
-	component: TemplateResult | Class | ModuleResolver | PageComponent | ((this: LitElement, info?: IRoutingInfo<D>) => TemplateResult) | (() => Class) | (() => PageComponent) | (() => ModuleResolver);
+	component: TemplateResult |
+	Class |
+	ModuleResolver |
+	PageComponent |
+	((this: LitElement, info?: IRoutingInfo<D>) => TemplateResult) |
+	// ((info?: IRoutingInfo<D>) => TemplateResult) | 
+	(() => Class) |
+	(() => PageComponent) |
+	(() => ModuleResolver);
 
 	// A custom setup function for the instance of the component.
 	setup?: Setup;
@@ -104,15 +112,15 @@ export interface IRouteMatch<D = any> {
 export type PushStateEvent = CustomEvent<null>;
 export type ReplaceStateEvent = CustomEvent<null>;
 export type ChangeStateEvent = CustomEvent<null>;
-export type WillChangeStateEvent = CustomEvent<{ url?: string | null, eventName: GlobalRouterEvent}>;
+export type WillChangeStateEvent = CustomEvent<{ url?: string | null, eventName: GlobalRouterEvent }>;
 export type NavigationStartEvent<D = any> = CustomEvent<IRoutingInfo<D>>;
 export type NavigationSuccessEvent<D = any> = CustomEvent<IRoutingInfo<D>>;
 export type NavigationCancelEvent<D = any> = CustomEvent<IRoutingInfo<D>>;
 export type NavigationErrorEvent<D = any> = CustomEvent<IRoutingInfo<D>>;
 export type NavigationEndEvent<D = any> = CustomEvent<IRoutingInfo<D>>;
 
-export type Params = {[key: string]: string};
-export type Query = {[key: string]: string};
+export type Params = { [key: string]: string };
+export type Query = { [key: string]: string };
 
 export type EventListenerSubscription = (() => void);
 
@@ -126,7 +134,7 @@ export type RouterSlotEvent = "changestate";
  */
 export type GlobalRouterEvent =
 
-// An event triggered when a new state is added to the history.
+	// An event triggered when a new state is added to the history.
 	"pushstate"
 
 	// An event triggered when the current state is replaced in the history.

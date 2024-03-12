@@ -5,7 +5,7 @@
 		"moduleResolution": "bundler",
 		"emitDecoratorMetadata": false,
 		"newLine": "LF",
-		"outDir": "./dist",
+		"outDir": "./src/lib",
     "rootDir": "./src/lib",
 		"sourceMap": true,
 		"allowSyntheticDefaultImports": true,

@@ -173,7 +173,7 @@ describe("router-slot", () => {
             history.pushState(null, "", `two/${param}`);
 
             waitForNavigation(() => {
-                // console.info('path', path(), $root.$slot.params);
+                console.info('path', path(), $root.$slot.params);
                 expect(path()).to.equal(`/two/${param}/leaf-two/`);
                 expect(JSON.stringify($root.$slot.params)).to.equal(JSON.stringify({ id: param }));
                 done();

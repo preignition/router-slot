@@ -21,6 +21,7 @@ ensureAnchorHistory();
 export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouterSlot<D, P> {
 
 	div = document.createElement('div');
+	_hasTemplate: boolean | undefined;
 	/**
 	 * Listeners on the router.
 	 */
@@ -203,9 +204,7 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
 	 * Clears the children in the DOM.
 	 */
 	protected clearChildren () {
-		while (this.firstChild != null) {
-			this.firstChild.parentNode!.removeChild(this.firstChild);
-		}
+		render(null, this);
 	}
 
 	/**
@@ -308,15 +307,12 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
 						// render the template 
 						// we render in an external div first, otherwise lit complain about template part 
 						// being manipulated outside lit.
-						render(page, this.div);
-
-						Array.from(this.div.childNodes)
-							.filter(node => node.nodeType !== Node.COMMENT_NODE)
-							.forEach(node => this.appendChild(node));
+						render(page, this);
+						
 
 					} else {	
 						// Append the new page
-						this.appendChild(page);
+						render(page, this);
 					}
 				}
 

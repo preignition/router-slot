@@ -6,7 +6,7 @@
 	"author": "Andreas Mehlsen",
 	"type": "module",
 	"types": "src/lib/index.ts",
-	"main": "dist/index.js",
+	"main": "src/lib/index",
 	"bugs": {
 		"url": "https://github.com/andreasbm/router-slot/issues"
 	},
@@ -37,7 +37,7 @@
 		"prepublish": "npm run build",
 		"build": "tsc",
 		"build:watch": "tsc --watch",
-		"clean": "rimraf -g dist  src/test/*.{d.ts,d.ts.map,js,js.map}",
+		"clean": "rimraf -g src/lib/*.{d.ts,d.ts.map,js,js.map} src/lib/util/*.{d.ts,d.ts.map,js,js.map}  src/test/*.{d.ts,d.ts.map,js,js.map}",
 		"test": "vitest",
 		"start": "vite",
 		"test:browser": "vitest --browser \"chrome\"",

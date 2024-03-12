@@ -1,6 +1,6 @@
 import { css, LitElement, PropertyValues, TemplateResult, html } from "lit";
 import "weightless/nav";
-import { basePath, GLOBAL_ROUTER_EVENTS_TARGET, IRoute, isPathActive, PageComponent, query, queryString, IRoutingInfo } from "../../../lib";
+import { basePath, GLOBAL_ROUTER_EVENTS_TARGET, IRoute, isPathActive, PageComponent, query, queryString, IRoutingInfo } from "router-slot";
 import { sharedStyles } from "../styles";
 import "weightless/button";
 
