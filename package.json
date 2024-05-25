@@ -46,13 +46,15 @@
 		"publish:minor": "np minor --contents=dist --no-cleanup",
 		"publish:major": "np major --contents=dist --no-cleanup"
 	},
+	"dependencies": {
+		"lit": "^3.1.2"
+	},
 	"devDependencies": {
 		"@types/mocha": "^10.0.6",
 		"@vitest/browser": "^1.0.4",
 		"@vitest/ui": "^1.3.1",
 		"eslint": "^8.57.0",
 		"happy-dom": "^13.5.0",
-		"lit": "^3.1.2",
 		"lit-analyzer": "^2.0.3",
 		"mocha": "^10.3.0",
 		"node-typescript-compiler": "^4.0.0",
