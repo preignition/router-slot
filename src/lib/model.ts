@@ -84,6 +84,12 @@ export interface IComponentRoute<D = any> extends IRouteBase<D> {
 
 	// A custom setup function for the instance of the component.
 	setup?: Setup;
+
+	// Whether the component should be cached.
+	cache?: boolean;
+
+	// cached component - cached component are cleared when the router-slot is removed from the DOM
+	cachedComponent?: PageComponent;
 }
 
 /**
