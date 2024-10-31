@@ -1,4 +1,4 @@
-import type { TemplateResult } from 'lit';
+import type { TemplateResult, DirectiveResult } from 'lit';
 import { CATCH_ALL_WILDCARD, DEFAULT_PATH_MATCH, PARAM_IDENTIFIER, TRAVERSE_FLAG } from "../config";
 import { IComponentRoute, IRedirectRoute, IResolverRoute, IRoute, IRouteMatch, IRouterSlot, IRoutingInfo, ModuleResolver, PageComponent, Params, PathFragment, RouterTree } from "../model";
 import { constructPathWithBasePath, path as getPath, queryString, stripSlash } from "./url";
@@ -117,7 +117,7 @@ export function matchRoutes<D = any>(routes: IRoute<D>[], path: string | PathFra
 export async function resolvePageComponent(route: IComponentRoute, info: IRoutingInfo, rootNode: HTMLElement): Promise<PageComponent> {
 
 	// Figure out if the component were given as an import or class.
-	let cmp = route.component;
+	let cmp = route.cachedComponent || route.component;
 	if (cmp instanceof Function) {
 		try {
 			cmp = (cmp as Function).call(rootNode, info);
@@ -150,7 +150,10 @@ export async function resolvePageComponent(route: IComponentRoute, info: IRoutin
 	if (route.setup != null) {
 		route.setup(component, info);
 	}
-
+	// Cache the component if it should be cached.
+	if(route.cache) {
+		return route.cachedComponent = component;
+	}
 	return component;
 }
 

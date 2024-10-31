@@ -1,6 +1,6 @@
 import { render } from 'lit';
 import { GLOBAL_ROUTER_EVENTS_TARGET, ROUTER_SLOT_TAG_NAME } from "./config";
-import { Cancel, EventListenerSubscription, GlobalRouterEvent, IPathFragments, IRoute, IRouteMatch, IRouterSlot, IRoutingInfo, Params, PathFragment, RouterSlotEvent } from "./model";
+import { Cancel, EventListenerSubscription, GlobalRouterEvent, IComponentRoute, IPathFragments, IRoute, IRouteMatch, IRouterSlot, IRoutingInfo, Params, PathFragment, RouterSlotEvent } from "./model";
 import { addListener, constructAbsolutePath, dispatchGlobalRouterEvent, dispatchRouteChangeEvent, ensureAnchorHistory, ensureHistoryEvents, handleRedirect, isRedirectRoute, isResolverRoute, isTemplateResult, matchRoutes, pathWithoutBasePath, queryParentRouterSlot, removeListeners, resolvePageComponent, shouldNavigate } from "./util";
 
 const template = document.createElement("template");
@@ -117,6 +117,7 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
    * Tears down the element.
    */
   disconnectedCallback() {
+    this.clearCachedComponent();
     this.detachListeners();
   }
 
@@ -214,6 +215,11 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
     removeListeners(this.listeners);
   }
 
+  protected clearCachedComponent() {
+    this._routes.forEach(route => {
+        delete (route as IComponentRoute).cachedComponent;
+    })
+  }
   /**
    * Loads a new path based on the routes.
    * Returns true if a navigation was made to a new page.
