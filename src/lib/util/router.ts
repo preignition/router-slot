@@ -1,12 +1,25 @@
-import type { TemplateResult, DirectiveResult } from 'lit';
+import type { TemplateResult } from 'lit';
 import { CATCH_ALL_WILDCARD, DEFAULT_PATH_MATCH, PARAM_IDENTIFIER, TRAVERSE_FLAG } from "../config";
-import { IComponentRoute, IRedirectRoute, IResolverRoute, IRoute, IRouteMatch, IRouterSlot, IRoutingInfo, ModuleResolver, PageComponent, Params, PathFragment, RouterTree } from "../model";
+import {
+	IComponentRoute,
+	IRedirectRoute,
+	IResolverRoute,
+	IRoute,
+	IRouteMatch,
+	IRouterSlot,
+	IRoutingInfo,
+	ModuleResolver,
+	PageComponent,
+	Params,
+	PathFragment,
+	RouterTree
+} from "../model";
 import { constructPathWithBasePath, path as getPath, queryString, stripSlash } from "./url";
 
 /**
  * determines whether a el is a Lit TemplateResult
  */
-export function isTemplateResult(el: any): el is TemplateResult {
+function isTemplateResult(el: any): el is TemplateResult {
 	return el.strings !== undefined && el.values !== undefined;
 }
 
@@ -151,7 +164,7 @@ export async function resolvePageComponent(route: IComponentRoute, info: IRoutin
 		route.setup(component, info);
 	}
 	// Cache the component if it should be cached.
-	if(route.cache) {
+	if (route.cache) {
 		return route.cachedComponent = component;
 	}
 	return component;
