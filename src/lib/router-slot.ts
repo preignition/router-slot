@@ -1,7 +1,7 @@
 import { render } from 'lit';
 import { GLOBAL_ROUTER_EVENTS_TARGET, ROUTER_SLOT_TAG_NAME } from "./config";
 import { Cancel, EventListenerSubscription, GlobalRouterEvent, IComponentRoute, IPathFragments, IRoute, IRouteMatch, IRouterSlot, IRoutingInfo, Params, PathFragment, RouterSlotEvent } from "./model";
-import { addListener, constructAbsolutePath, dispatchGlobalRouterEvent, dispatchRouteChangeEvent, ensureAnchorHistory, ensureHistoryEvents, handleRedirect, isRedirectRoute, isResolverRoute, matchRoutes, pathWithoutBasePath, queryParentRouterSlot, removeListeners, resolvePageComponent, shouldNavigate } from "./util";
+import { addListener, constructAbsolutePath, dispatchGlobalRouterEvent, dispatchRouteChangeEvent, ensureAnchorHistory, ensureHistoryEvents, handleRedirect, isRedirectRoute, isResolverRoute, isTemplateResult, matchRoutes, pathWithoutBasePath, queryParentRouterSlot, removeListeners, resolvePageComponent, shouldNavigate } from "./util";
 
 const template = document.createElement("template");
 template.innerHTML = `<slot></slot>`;
@@ -217,7 +217,7 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
 
   protected clearCachedComponent() {
     this._routes.forEach(route => {
-        delete (route as IComponentRoute).cachedComponent;
+      delete (route as IComponentRoute).cachedComponent;
     })
   }
   /**
@@ -311,6 +311,14 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
 
           // Append the new page
           render(page, this);
+          // we want to cache the component and not the template
+          if ((this.route as IComponentRoute).cache && isTemplateResult(page)) {
+            route.cachedComponent = this.firstElementChild
+            // we usually need a setup in this case
+            if (!route.setup) {
+              console.warn('no setup function provided for lit-template cached component')
+            }
+          }
         }
 
         // Remember to cleanup after the navigation
