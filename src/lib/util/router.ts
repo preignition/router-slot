@@ -1,4 +1,4 @@
-import type { TemplateResult } from 'lit';
+import type { TemplateResult, Directive } from 'lit';
 import { CATCH_ALL_WILDCARD, DEFAULT_PATH_MATCH, PARAM_IDENTIFIER, TRAVERSE_FLAG } from "../config";
 import {
 	IComponentRoute,
@@ -19,8 +19,12 @@ import { constructPathWithBasePath, path as getPath, queryString, stripSlash } f
 /**
  * determines whether a el is a Lit TemplateResult
  */
-function isTemplateResult(el: any): el is TemplateResult {
+export function isTemplateResult(el: any): el is TemplateResult {
 	return el.strings !== undefined && el.values !== undefined;
+}
+
+export function isDirective(el: any): el is Directive {
+	return el._$litDirective$ !== undefined && el.values !== undefined;
 }
 
 /**
@@ -151,6 +155,9 @@ export async function resolvePageComponent(route: IComponentRoute, info: IRoutin
 	// Instantiate the component
 	let component!: PageComponent;
 	if (isTemplateResult(moduleClassOrPage)) {
+		component = moduleClassOrPage;
+	}
+	else if (isDirective(moduleClassOrPage)) {
 		component = moduleClassOrPage;
 	}
 	else if (!(moduleClassOrPage instanceof HTMLElement)) {
