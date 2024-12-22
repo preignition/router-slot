@@ -1,4 +1,5 @@
 import type { LitElement, TemplateResult } from 'lit'
+import { Directive } from 'lit/directive.js';
 export interface IRouterSlot<D = any, P = any> extends HTMLElement {
 	readonly route: IRoute<D> | null;
 	readonly isRoot: boolean;
@@ -23,10 +24,10 @@ export type CustomResolver<D = any, P = any> = ((info: IRoutingInfo<D>) => boole
 export type Guard<D = any, P = any> = ((info: IRoutingInfo<D, P>) => boolean | Promise<boolean>);
 export type Cancel = (() => boolean);
 
-export type PageComponent = HTMLElement | TemplateResult;
+export type PageComponent = HTMLElement | TemplateResult | Directive
 export type ModuleResolver = Promise<{ default: any; /*PageComponent*/ }>;
 export type Class<T extends PageComponent = PageComponent> = { new(...args: any[]): T; };
-export type Setup<D = any> = ((component: PageComponent, info: IRoutingInfo<D>) => void);
+export type Setup<D = any> = ((component: HTMLElement, info: IRoutingInfo<D>) => void);
 
 export type RouterTree<D = any, P = any> = { slot: IRouterSlot<D, P> } & { child?: RouterTree } | null | undefined;
 export type PathMatch = "prefix" | "suffix" | "full" | "fuzzy";
@@ -76,8 +77,9 @@ export interface IComponentRoute<D = any> extends IRouteBase<D> {
 	Class |
 	ModuleResolver |
 	PageComponent |
-	((this: LitElement, info?: IRoutingInfo<D>) => TemplateResult) |
-	// ((info?: IRoutingInfo<D>) => TemplateResult) | 
+	((this: LitElement, info: IRoutingInfo<D>) => TemplateResult) |
+	((this: LitElement, info: IRoutingInfo<D>) => Promise<TemplateResult<any>>) |
+	// (() => Class) |
 	(() => Class) |
 	(() => PageComponent) |
 	(() => ModuleResolver);

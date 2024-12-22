@@ -1,4 +1,5 @@
-import type { TemplateResult, Directive } from 'lit';
+import type { TemplateResult } from 'lit';
+import { Directive } from 'lit/directive.js';
 import { CATCH_ALL_WILDCARD, DEFAULT_PATH_MATCH, PARAM_IDENTIFIER, TRAVERSE_FLAG } from "../config";
 import {
 	IComponentRoute,
@@ -158,7 +159,7 @@ export async function resolvePageComponent(route: IComponentRoute, info: IRoutin
 		component = moduleClassOrPage;
 	}
 	else if (isDirective(moduleClassOrPage)) {
-		component = moduleClassOrPage;
+		component = moduleClassOrPage ;
 	}
 	else if (!(moduleClassOrPage instanceof HTMLElement)) {
 		component = new (moduleClassOrPage.default ? moduleClassOrPage.default : moduleClassOrPage)() as PageComponent;
@@ -168,7 +169,7 @@ export async function resolvePageComponent(route: IComponentRoute, info: IRoutin
 
 	// Setup the component using the callback.
 	if (route.setup != null) {
-		route.setup(component, info);
+		route.setup(component as HTMLElement, info);
 	}
 	// Cache the component if it should be cached.
 	if (route.cache) {
