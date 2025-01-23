@@ -155,11 +155,9 @@ export async function resolvePageComponent(route: IComponentRoute, info: IRoutin
 
 	// Instantiate the component
 	let component!: PageComponent;
-	if (isTemplateResult(moduleClassOrPage)) {
+	const isLit = isTemplateResult(moduleClassOrPage) || isDirective(moduleClassOrPage);
+	if (isLit) {
 		component = moduleClassOrPage;
-	}
-	else if (isDirective(moduleClassOrPage)) {
-		component = moduleClassOrPage ;
 	}
 	else if (!(moduleClassOrPage instanceof HTMLElement)) {
 		component = new (moduleClassOrPage.default ? moduleClassOrPage.default : moduleClassOrPage)() as PageComponent;
@@ -168,7 +166,8 @@ export async function resolvePageComponent(route: IComponentRoute, info: IRoutin
 	}
 
 	// Setup the component using the callback.
-	if (route.setup != null) {
+	// for lit components, we apply the setup later, when the component is connected to the DOM.
+	if (route.setup != null && !isLit) {
 		route.setup(component as HTMLElement, info);
 	}
 	// Cache the component if it should be cached.
