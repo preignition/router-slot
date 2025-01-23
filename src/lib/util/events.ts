@@ -6,8 +6,8 @@ import { EventListenerSubscription, GlobalRouterEvent, IRoute, IRoutingInfo } fr
  * @param $elem
  * @param {IRoute} detail
  */
-export function dispatchRouteChangeEvent<D = any> ($elem: HTMLElement, detail: IRoutingInfo<D>) {
-	$elem.dispatchEvent(new CustomEvent("changestate", {detail}));
+export function dispatchRouteChangeEvent<D = any>($elem: HTMLElement, detail: IRoutingInfo<D>) {
+	$elem.dispatchEvent(new CustomEvent("changestate", { detail }));
 }
 
 /**
@@ -15,8 +15,8 @@ export function dispatchRouteChangeEvent<D = any> ($elem: HTMLElement, detail: I
  * @param name
  * @param detail
  */
-export function dispatchGlobalRouterEvent<D = any> (name: GlobalRouterEvent, detail?: IRoutingInfo<D>) {
-	GLOBAL_ROUTER_EVENTS_TARGET.dispatchEvent(new CustomEvent(name, {detail}));
+export function dispatchGlobalRouterEvent<D = any>(name: GlobalRouterEvent, detail?: IRoutingInfo<D>) {
+	GLOBAL_ROUTER_EVENTS_TARGET.dispatchEvent(new CustomEvent(name, { detail }));
 	// if ("debugRouterSlot" in window) {
 	// 	console.log(`%c [router-slot]: ${name}`, `color: #286ee0`, detail);
 	// }
@@ -29,10 +29,10 @@ export function dispatchGlobalRouterEvent<D = any> (name: GlobalRouterEvent, det
  * @param listener
  * @param options
  */
-export function addListener<T extends Event, eventType extends string> ($elem: EventTarget,
-                                                                  type: eventType[] | eventType,
-                                                                  listener: ((e: T) => void),
-                                                                  options?: boolean | AddEventListenerOptions): EventListenerSubscription {
+export function addListener<T extends Event, eventType extends string>($elem: EventTarget,
+	type: eventType[] | eventType,
+	listener: ((e: T) => void),
+	options?: boolean | AddEventListenerOptions): EventListenerSubscription {
 	const types = Array.isArray(type) ? type : [type];
 	types.forEach(t => $elem.addEventListener(t, listener as EventListenerOrEventListenerObject, options));
 	return () => types.forEach(
@@ -44,6 +44,6 @@ export function addListener<T extends Event, eventType extends string> ($elem: E
  * Removes the event listeners in the array.
  * @param listeners
  */
-export function removeListeners (listeners: EventListenerSubscription[]) {
+export function removeListeners(listeners: EventListenerSubscription[]) {
 	listeners.forEach(unsub => unsub());
 }

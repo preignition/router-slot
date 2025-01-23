@@ -1,4 +1,4 @@
-import type { LitElement, TemplateResult } from 'lit'
+import type { TemplateResult } from 'lit';
 import { Directive } from 'lit/directive.js';
 export interface IRouterSlot<D = any, P = any> extends HTMLElement {
 	readonly route: IRoute<D> | null;
@@ -77,9 +77,8 @@ export interface IComponentRoute<D = any> extends IRouteBase<D> {
 	Class |
 	ModuleResolver |
 	PageComponent |
-	((this: LitElement, info: IRoutingInfo<D>) => TemplateResult) |
-	((this: LitElement, info: IRoutingInfo<D>) => Promise<TemplateResult<any>>) |
-	// (() => Class) |
+	((info: IRoutingInfo<D>) => TemplateResult) |
+	((info: IRoutingInfo<D>) => Promise<TemplateResult<any>>) |
 	(() => Class) |
 	(() => PageComponent) |
 	(() => ModuleResolver);
