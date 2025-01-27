@@ -22,6 +22,7 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
 
   div = document.createElement('div');
   _hasTemplate: boolean | undefined;
+  _previousPage: PageComponent | undefined;
   /**
    * Listeners on the router.
    */
@@ -301,19 +302,25 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
             return cancel();
           }
 
+          if (this._previousPage !== page) {
+            console.info('rendering new page', page)
+            // Remove the old page by clearing the slot
+            this.clearChildren();
 
-          // Remove the old page by clearing the slot
-          this.clearChildren();
+            // Store the new route match before we append the new page to the DOM.
+            // We do this to ensure that we can find the match in the connectedCallback of the page.
+            this._routeMatch = match;
 
-          // Store the new route match before we append the new page to the DOM.
-          // We do this to ensure that we can find the match in the connectedCallback of the page.
-          this._routeMatch = match;
+            // Append the new page
+            render(page, this);
+          } else {
+            console.info('not rendering new page')
+            this._routeMatch = match;
+          }
+          this._previousPage = page;
 
-          // Append the new page
-          render(page, this);
-
-          // we want to cache the component and not the template
           const isLit = isTemplateResult(page) || isDirective(page)
+          // we want to cache the component and not the template
           if (isLit && this.firstElementChild) {
             if (!route.setup) {
               console.warn('no setup function provided for lit-template cached component')
