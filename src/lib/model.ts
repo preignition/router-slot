@@ -13,6 +13,7 @@ export interface IRouterSlot<D = any, P = any> extends HTMLElement {
 	constructAbsolutePath: ((path: PathFragment) => string);
 	parent: IRouterSlot<P> | null | undefined;
 	queryParentRouterSlot: (() => IRouterSlot<P> | null);
+	clearCachedComponent: () => void;
 }
 
 export type IRoutingInfo<D = any, P = any> = {

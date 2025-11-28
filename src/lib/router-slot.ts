@@ -216,7 +216,7 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
     removeListeners(this.listeners);
   }
 
-  protected clearCachedComponent() {
+  clearCachedComponent() {
     this._routes.forEach(route => {
       delete (route as IComponentRoute).cachedComponent;
     })
@@ -303,7 +303,7 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
           }
 
           if (this._previousPage !== page) {
-            console.info('rendering new page', page)
+            // console.info('rendering new page', page)
             // Remove the old page by clearing the slot
             this.clearChildren();
 
@@ -314,7 +314,7 @@ export class RouterSlot<D = any, P = any> extends HTMLElement implements IRouter
             // Append the new page
             render(page, this);
           } else {
-            console.info('not rendering new page')
+            // console.info('not rendering new page')
             this._routeMatch = match;
           }
           this._previousPage = page;
